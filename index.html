@@ -99,13 +99,14 @@
       padding: 18px 32px;
       transition: background .4s ease, box-shadow .4s ease;
     }
-    #navbar.scrolled {
+    #navbar.scrolled,
+    #navbar.menu-open {
       background: rgba(6,21,37,.96);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       box-shadow: 0 4px 32px rgba(0,0,0,.4);
-      padding: 14px 32px;
     }
+    #navbar.scrolled { padding: 14px 32px; }
     .nav-inner {
       max-width: 1200px; margin: 0 auto;
       display: flex; align-items: center; justify-content: space-between;
@@ -233,7 +234,7 @@
       position: relative; overflow: hidden;
       background:
         linear-gradient(155deg, rgba(6,21,37,.88) 0%, rgba(11,31,53,.72) 55%, rgba(196,149,106,.18) 100%),
-        url('https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=1920&q=80') center/cover no-repeat;
+        url('https://picsum.photos/seed/remodel/1920/1080') center/cover no-repeat;
     }
     #hero::before {
       content:''; position:absolute; inset:0; pointer-events:none;
@@ -691,7 +692,7 @@
   <div class="about-inner">
     <!-- Image -->
     <div class="about-img-wrap reveal left">
-      <img src="https://images.unsplash.com/photo-1588854337221-4cf9fa96059c?w=900&q=80" alt="Professional remodeling craftsmanship" loading="lazy"/>
+      <img src="https://picsum.photos/seed/craftsman/900/600" alt="Professional remodeling craftsmanship" loading="lazy"/>
       <div class="about-badge">
         <div class="big">20+</div>
         <div class="sm">Years of Craftsmanship</div>
@@ -843,17 +844,17 @@
       <p class="t-sm-label">Our Work</p>
     </div>
     <div class="gallery-grid">
-        <div class="gallery-item reveal scale">
-            <img src="../images/o.jpg" alt="Deck construction"/>
-          </div>
+      <div class="gallery-item reveal scale">
+        <img src="images/o.jpg" onerror="this.src='https://picsum.photos/seed/deck/600/600'" alt="Deck construction"/>
+      </div>
       <div class="gallery-item reveal scale d1">
-        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=75" alt="Interior painting"/>
+        <img src="images/348s (3).jpg" alt="Interior painting"/>
       </div>
       <div class="gallery-item reveal scale d2">
-        <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=600&q=75" alt="Bathroom renovation"/>
+        <img src="images/348s.jpg" alt="Bathroom renovation"/>
       </div>
       <div class="gallery-item reveal scale d3">
-        <img src="https://images.unsplash.com/photo-1560448204-603b3fc33ddc?w=600&q=75" alt="Hardwood flooring"/>
+        <img src="images/Screenshot 2026-05-28 090841.png" alt="Hardwood flooring"/>
       </div>
     </div>
   </div>
@@ -1087,9 +1088,14 @@ window.addEventListener('scroll', () => {
 
 /* ── Mobile menu ── */
 document.getElementById('hamburger').addEventListener('click', () => {
-  document.getElementById('mobile-menu').classList.toggle('open');
+  const menu = document.getElementById('mobile-menu');
+  const isOpen = menu.classList.toggle('open');
+  nav.classList.toggle('menu-open', isOpen);
 });
-function closeMMenu() { document.getElementById('mobile-menu').classList.remove('open'); }
+function closeMMenu() {
+  document.getElementById('mobile-menu').classList.remove('open');
+  nav.classList.remove('menu-open');
+}
 
 /* ── Scroll reveal ── */
 const revEls = document.querySelectorAll('.reveal');
