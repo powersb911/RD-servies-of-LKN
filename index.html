@@ -524,22 +524,16 @@
     /* Lightbox */
     #lightbox {
       position:fixed; inset:0; z-index:9999;
-      background:rgba(5,15,27,.94);
-      backdrop-filter:blur(18px);
+      background:rgba(5,15,27,.94); backdrop-filter:blur(18px);
       display:flex; align-items:center; justify-content:center;
-      opacity:0; pointer-events:none;
-      transition:opacity .35s ease;
+      opacity:0; pointer-events:none; transition:opacity .35s ease;
     }
     #lightbox.open { opacity:1; pointer-events:all; }
-    .lb-inner {
-      position:relative; max-width:90vw; max-height:88vh;
-      display:flex; align-items:center;
-    }
+    .lb-inner { position:relative; max-width:90vw; max-height:88vh; display:flex; align-items:center; }
     #lbImg {
       max-width:86vw; max-height:82vh;
       border-radius:12px; object-fit:contain; display:block;
-      box-shadow:0 32px 80px rgba(0,0,0,.7);
-      transition:opacity .25s ease;
+      box-shadow:0 32px 80px rgba(0,0,0,.7); transition:opacity .25s ease;
     }
     .lb-btn {
       position:absolute; top:50%; transform:translateY(-50%);
@@ -557,8 +551,7 @@
       width:42px; height:42px; border-radius:50%;
       background:rgba(255,255,255,.10); border:1px solid rgba(255,255,255,.20);
       color:#fff; font-size:20px; cursor:pointer;
-      display:flex; align-items:center; justify-content:center;
-      transition:all .25s;
+      display:flex; align-items:center; justify-content:center; transition:all .25s;
     }
     #lbClose:hover { background:rgba(212,160,51,.25); border-color:var(--c-gold); }
     .lb-counter {
@@ -671,7 +664,6 @@
       .about-sec,.svc-sec,.stats-band,.gallery-sec,.cta-sec { padding:64px 20px; }
       .testi-sec { padding:64px 0; }
       .manual-wrap { padding:0 20px; }
-      .gallery-grid { grid-template-columns:repeat(2,1fr); }
       .footer-grid { grid-template-columns:1fr; gap:32px; }
       .form-row { grid-template-columns:1fr; }
       .contact-form { padding:24px; }
@@ -1241,25 +1233,24 @@ window.addEventListener('resize', () => {
 
 /* ── Gallery infinite scroll + lightbox ── */
 const GALLERY_IMGS = [
-  { src:'o.jpg',                          alt:'Deck construction – multi-level wood deck' },
+  { src:'o.jpg',                          alt:'Deck construction' },
   { src:'348s_1.jpg',                     alt:'Hardwood flooring installation' },
   { src:'348s_2.jpg',                     alt:'Flagstone patio' },
   { src:'348s_3.jpg',                     alt:'Kitchen cabinet painting' },
   { src:'348s.jpg',                       alt:'Rustic basement remodel' },
   { src:'Screenshot_20260528_090841.png', alt:'Trex composite deck' },
-  { src:'image2.png',                     alt:'Exterior painting – brick home' },
-  { src:'image1.jpeg',                    alt:'Kitchen renovation with new flooring' },
-  { src:'image0.jpeg',                    alt:'Interior remodeling project' },
+  { src:'image2.png',                     alt:'Exterior house painting' },
+  { src:'image1.jpeg',                    alt:'Kitchen renovation' },
+  { src:'image0.jpeg',                    alt:'Interior remodeling' },
   { src:'image0_1.jpeg',                  alt:'Home improvement project' },
   { src:'image1_1.jpeg',                  alt:'Renovation detail work' },
-  { src:'image3.jpeg',                    alt:'Finished renovation project' },
+  { src:'image3.jpeg',                    alt:'Finished renovation' },
 ];
 
 function buildGalleryItem(img, realIdx) {
   const el = document.createElement('div');
   el.className = 'gallery-item';
-  el.innerHTML = `
-    <img src="${img.src}" alt="${img.alt}" loading="lazy"/>
+  el.innerHTML = `<img src="${img.src}" alt="${img.alt}" loading="lazy"/>
     <div class="gallery-item-overlay">
       <svg width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/>
@@ -1273,21 +1264,18 @@ function initGallery() {
   const row = document.getElementById('galleryRow');
   if (!row) return;
   row.innerHTML = '';
-  // Duplicate array for seamless infinite loop
   [...GALLERY_IMGS, ...GALLERY_IMGS].forEach((img, i) => {
     row.appendChild(buildGalleryItem(img, i % GALLERY_IMGS.length));
   });
 }
 
-// Lightbox
 let lbIdx = 0;
 const lb    = document.getElementById('lightbox');
 const lbImg = document.getElementById('lbImg');
 const lbCtr = document.getElementById('lbCounter');
 
 function openLightbox(idx) {
-  lbIdx = idx;
-  showLbImg();
+  lbIdx = idx; showLbImg();
   lb.classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -1301,7 +1289,6 @@ function showLbImg() {
     const g = GALLERY_IMGS[lbIdx];
     lbImg.src = g.src;
     lbImg.alt = g.alt;
-    lbImg.onerror = null; // no fallback — show only real images
     lbImg.style.opacity = '1';
     lbCtr.textContent = (lbIdx + 1) + ' / ' + GALLERY_IMGS.length;
   }, 150);
