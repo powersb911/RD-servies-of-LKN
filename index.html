@@ -484,14 +484,94 @@
     .c-dot.active { background:var(--c-gold); transform:scale(1.35); }
 
     /* ══════════════════════════════════════
-       GALLERY STRIP
+       GALLERY STRIP — INFINITE SCROLL + LIGHTBOX
     ══════════════════════════════════════ */
-    .gallery-sec { background:var(--c-cream-bg); padding:64px 32px; }
-    .gallery-inner { max-width:1200px; margin:0 auto; }
-    .gallery-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:28px; }
-    .gallery-item { border-radius:10px; overflow:hidden; aspect-ratio:1; }
-    .gallery-item img { width:100%; height:100%; object-fit:cover; transition:transform .5s ease; display:block; }
+    .gallery-sec { background:var(--c-cream-bg); padding:64px 0; }
+    .gallery-inner { max-width:1200px; margin:0 auto; padding:0 32px; }
+
+    .gallery-scroll-mask {
+      overflow:hidden; margin-top:28px;
+      -webkit-mask-image:linear-gradient(to right,transparent,black 6%,black 94%,transparent);
+      mask-image:linear-gradient(to right,transparent,black 6%,black 94%,transparent);
+    }
+    .gallery-auto-row { display:flex; gap:14px; width:max-content; }
+    .gallery-auto-row:hover { animation-play-state:paused; }
+    @keyframes galScroll { to { transform:translateX(-50%); } }
+    .gallery-auto-run { animation:galScroll 45s linear infinite; }
+
+    .gallery-item {
+      flex-shrink:0; width:280px; height:210px;
+      border-radius:12px; overflow:hidden; cursor:pointer; position:relative;
+    }
+    .gallery-item img {
+      width:100%; height:100%; object-fit:cover;
+      transition:transform .5s ease; display:block;
+    }
     .gallery-item:hover img { transform:scale(1.08); }
+    .gallery-item-overlay {
+      position:absolute; inset:0; background:rgba(6,21,37,0);
+      display:flex; align-items:center; justify-content:center;
+      transition:background .3s;
+    }
+    .gallery-item:hover .gallery-item-overlay { background:rgba(6,21,37,.38); }
+    .gallery-item-overlay svg {
+      opacity:0; transform:scale(.7);
+      transition:opacity .3s, transform .3s;
+      color:#fff; filter:drop-shadow(0 2px 8px rgba(0,0,0,.5));
+    }
+    .gallery-item:hover .gallery-item-overlay svg { opacity:1; transform:scale(1); }
+
+    /* Lightbox */
+    #lightbox {
+      position:fixed; inset:0; z-index:9999;
+      background:rgba(5,15,27,.94);
+      backdrop-filter:blur(18px);
+      display:flex; align-items:center; justify-content:center;
+      opacity:0; pointer-events:none;
+      transition:opacity .35s ease;
+    }
+    #lightbox.open { opacity:1; pointer-events:all; }
+    .lb-inner {
+      position:relative; max-width:90vw; max-height:88vh;
+      display:flex; align-items:center;
+    }
+    #lbImg {
+      max-width:86vw; max-height:82vh;
+      border-radius:12px; object-fit:contain; display:block;
+      box-shadow:0 32px 80px rgba(0,0,0,.7);
+      transition:opacity .25s ease;
+    }
+    .lb-btn {
+      position:absolute; top:50%; transform:translateY(-50%);
+      width:50px; height:50px; border-radius:50%;
+      background:rgba(255,255,255,.10); border:1px solid rgba(212,160,51,.35);
+      color:#fff; font-size:20px; cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      transition:all .25s; z-index:2;
+    }
+    .lb-btn:hover { background:rgba(212,160,51,.25); border-color:var(--c-gold); }
+    #lbPrev { left:-64px; }
+    #lbNext { right:-64px; }
+    #lbClose {
+      position:absolute; top:-52px; right:0;
+      width:42px; height:42px; border-radius:50%;
+      background:rgba(255,255,255,.10); border:1px solid rgba(255,255,255,.20);
+      color:#fff; font-size:20px; cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      transition:all .25s;
+    }
+    #lbClose:hover { background:rgba(212,160,51,.25); border-color:var(--c-gold); }
+    .lb-counter {
+      position:absolute; bottom:-40px; left:50%; transform:translateX(-50%);
+      font-size:13px; color:rgba(245,239,230,.45); white-space:nowrap;
+      font-family:'DM Sans',sans-serif; letter-spacing:.05em;
+    }
+    @media(max-width:768px){
+      .gallery-item { width:220px; height:165px; }
+      #lbPrev { left:-14px; width:38px; height:38px; font-size:16px; }
+      #lbNext { right:-14px; width:38px; height:38px; font-size:16px; }
+      #lbImg { max-width:92vw; }
+    }
 
     /* ══════════════════════════════════════
        CTA CONTACT SECTION
@@ -838,25 +918,27 @@
 
 
 <!-- ═══════════════ GALLERY ═══════════════ -->
-<div class="gallery-sec">
+<div class="gallery-sec" id="gallery">
   <div class="gallery-inner">
-    <div style="text-align:center;margin-bottom:8px;">
+    <div style="text-align:center;margin-bottom:4px;" class="reveal">
+      <div class="s-divider center"></div>
       <p class="t-sm-label">Our Work</p>
+      <h2 class="sec-h2" style="margin-top:6px;">Recent Projects</h2>
     </div>
-    <div class="gallery-grid">
-      <div class="gallery-item reveal scale">
-        <img src="images/o.jpg" onerror="this.src='https://picsum.photos/seed/deck/600/600'" alt="Deck construction"/>
-      </div>
-      <div class="gallery-item reveal scale d1">
-        <img src="images/348s (3).jpg" alt="Interior painting"/>
-      </div>
-      <div class="gallery-item reveal scale d2">
-        <img src="images/348s.jpg" alt="Bathroom renovation"/>
-      </div>
-      <div class="gallery-item reveal scale d3">
-        <img src="images/Screenshot 2026-05-28 090841.png" alt="Hardwood flooring"/>
-      </div>
-    </div>
+  </div>
+  <div class="gallery-scroll-mask">
+    <div class="gallery-auto-row gallery-auto-run" id="galleryRow"></div>
+  </div>
+</div>
+
+<!-- ═══════════════ LIGHTBOX ═══════════════ -->
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+  <div class="lb-inner">
+    <button id="lbClose" aria-label="Close">✕</button>
+    <button class="lb-btn" id="lbPrev" aria-label="Previous">&#8592;</button>
+    <img id="lbImg" src="" alt="Project photo"/>
+    <button class="lb-btn" id="lbNext" aria-label="Next">&#8594;</button>
+    <div class="lb-counter" id="lbCounter"></div>
   </div>
 </div>
 
@@ -1157,9 +1239,97 @@ window.addEventListener('resize', () => {
   rTimer = setTimeout(initManual, 150);
 });
 
+/* ── Gallery infinite scroll + lightbox ── */
+const GALLERY_IMGS = [
+  { src:'o.jpg',                          alt:'Deck construction – multi-level wood deck' },
+  { src:'348s_1.jpg',                     alt:'Hardwood flooring installation' },
+  { src:'348s_2.jpg',                     alt:'Flagstone patio' },
+  { src:'348s_3.jpg',                     alt:'Kitchen cabinet painting' },
+  { src:'348s.jpg',                       alt:'Rustic basement remodel' },
+  { src:'Screenshot_20260528_090841.png', alt:'Trex composite deck' },
+  { src:'image2.png',                     alt:'Exterior painting – brick home' },
+  { src:'image1.jpeg',                    alt:'Kitchen renovation with new flooring' },
+  { src:'image0.jpeg',                    alt:'Interior remodeling project' },
+  { src:'image0_1.jpeg',                  alt:'Home improvement project' },
+  { src:'image1_1.jpeg',                  alt:'Renovation detail work' },
+  { src:'image3.jpeg',                    alt:'Finished renovation project' },
+];
+
+function buildGalleryItem(img, realIdx) {
+  const el = document.createElement('div');
+  el.className = 'gallery-item';
+  el.innerHTML = `
+    <img src="${img.src}" alt="${img.alt}" loading="lazy"/>
+    <div class="gallery-item-overlay">
+      <svg width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/>
+      </svg>
+    </div>`;
+  el.addEventListener('click', () => openLightbox(realIdx));
+  return el;
+}
+
+function initGallery() {
+  const row = document.getElementById('galleryRow');
+  if (!row) return;
+  row.innerHTML = '';
+  // Duplicate array for seamless infinite loop
+  [...GALLERY_IMGS, ...GALLERY_IMGS].forEach((img, i) => {
+    row.appendChild(buildGalleryItem(img, i % GALLERY_IMGS.length));
+  });
+}
+
+// Lightbox
+let lbIdx = 0;
+const lb    = document.getElementById('lightbox');
+const lbImg = document.getElementById('lbImg');
+const lbCtr = document.getElementById('lbCounter');
+
+function openLightbox(idx) {
+  lbIdx = idx;
+  showLbImg();
+  lb.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  lb.classList.remove('open');
+  document.body.style.overflow = '';
+}
+function showLbImg() {
+  lbImg.style.opacity = '0';
+  setTimeout(() => {
+    const g = GALLERY_IMGS[lbIdx];
+    lbImg.src = g.src;
+    lbImg.alt = g.alt;
+    lbImg.onerror = null; // no fallback — show only real images
+    lbImg.style.opacity = '1';
+    lbCtr.textContent = (lbIdx + 1) + ' / ' + GALLERY_IMGS.length;
+  }, 150);
+}
+function lbNext() { lbIdx = (lbIdx + 1) % GALLERY_IMGS.length; showLbImg(); }
+function lbPrev() { lbIdx = (lbIdx - 1 + GALLERY_IMGS.length) % GALLERY_IMGS.length; showLbImg(); }
+
+document.getElementById('lbClose').addEventListener('click', closeLightbox);
+document.getElementById('lbNext').addEventListener('click', lbNext);
+document.getElementById('lbPrev').addEventListener('click', lbPrev);
+lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
+document.addEventListener('keydown', e => {
+  if (!lb.classList.contains('open')) return;
+  if (e.key === 'Escape')     closeLightbox();
+  if (e.key === 'ArrowRight') lbNext();
+  if (e.key === 'ArrowLeft')  lbPrev();
+});
+let lbTx = 0;
+lb.addEventListener('touchstart', e => { lbTx = e.touches[0].clientX; }, { passive:true });
+lb.addEventListener('touchend',   e => {
+  const d = e.changedTouches[0].clientX - lbTx;
+  if (Math.abs(d) > 45) d < 0 ? lbNext() : lbPrev();
+});
+
 /* ── Init ── */
 initAutoRow();
 initManual();
+initGallery();
 startTimer();
 if (window.scrollY > 55) nav.classList.add('scrolled');
 </script>
