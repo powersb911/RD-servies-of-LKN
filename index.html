@@ -664,6 +664,7 @@
       .about-sec,.svc-sec,.stats-band,.gallery-sec,.cta-sec { padding:64px 20px; }
       .testi-sec { padding:64px 0; }
       .manual-wrap { padding:0 20px; }
+      .gallery-grid { grid-template-columns:repeat(2,1fr); }
       .footer-grid { grid-template-columns:1fr; gap:32px; }
       .form-row { grid-template-columns:1fr; }
       .contact-form { padding:24px; }
@@ -1233,18 +1234,18 @@ window.addEventListener('resize', () => {
 
 /* ── Gallery infinite scroll + lightbox ── */
 const GALLERY_IMGS = [
-  { src:'o.jpg',                          alt:'Deck construction' },
-  { src:'348s_1.jpg',                     alt:'Hardwood flooring installation' },
-  { src:'348s_2.jpg',                     alt:'Flagstone patio' },
-  { src:'348s_3.jpg',                     alt:'Kitchen cabinet painting' },
-  { src:'348s.jpg',                       alt:'Rustic basement remodel' },
-  { src:'Screenshot_20260528_090841.png', alt:'Trex composite deck' },
-  { src:'image2.png',                     alt:'Exterior house painting' },
-  { src:'image1.jpeg',                    alt:'Kitchen renovation' },
-  { src:'image0.jpeg',                    alt:'Interior remodeling' },
-  { src:'image0_1.jpeg',                  alt:'Home improvement project' },
-  { src:'image1_1.jpeg',                  alt:'Renovation detail work' },
-  { src:'image3.jpeg',                    alt:'Finished renovation' },
+  { src:'images/o.jpg',                           alt:'Deck construction' },
+  { src:'images/348s (1).jpg',                    alt:'Hardwood flooring installation' },
+  { src:'images/348s (2).jpg',                    alt:'Flagstone patio' },
+  { src:'images/348s (3).jpg',                    alt:'Kitchen cabinet painting' },
+  { src:'images/348s.jpg',                        alt:'Rustic basement remodel' },
+  { src:'images/Screenshot 2026-05-28 090841.png',alt:'Trex composite deck' },
+  { src:'images/image2.png',                      alt:'Exterior house painting' },
+  { src:'images/image1.jpeg',                     alt:'Kitchen renovation' },
+  { src:'images/image0.jpeg',                     alt:'Interior remodeling' },
+  { src:'images/image0 (1).jpeg',                 alt:'Home improvement project' },
+  { src:'images/image1 (1).jpeg',                 alt:'Renovation detail work' },
+  { src:'images/image3.jpeg',                     alt:'Finished renovation' },
 ];
 
 function buildGalleryItem(img, realIdx) {
